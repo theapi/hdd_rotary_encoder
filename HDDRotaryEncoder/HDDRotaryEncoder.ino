@@ -8,7 +8,7 @@
 #define PROCESSING 1
 
 volatile int counter = 0; // changed by encoder input
-volatile byte old_AB = 0; // The previous reading
+volatile byte ab = 0; // The previous & current reading
  
 void setup()
 {
@@ -27,15 +27,15 @@ void loop()
 {
 
   static int last_count = 0;
-  static byte last_AB = 0;
+  static byte last_ab = 0;
   
-  if (last_AB != old_AB) {
-    last_AB = old_AB;
+  if (last_ab != ab) {
+    last_ab = ab;
     if (!PROCESSING) {
       Serial.print("Counter: ");
-      Serial.print(( old_AB & 0x0f ), DEC);
+      Serial.print(( ab & 0x0f ), DEC);
       Serial.print(" : ");
-      Serial.print(( old_AB & 0x0f ), BIN);
+      Serial.print(( ab & 0x0f ), BIN);
       Serial.print(" : ");
       Serial.println(counter, DEC);
     }
@@ -122,21 +122,21 @@ int8_t read_encoder()
    
   */
 
-  // old_AB gets shifted left two times 
+  // ab gets shifted left two times 
   // saving previous reading and setting two lower bits to “0″ 
   // so the current reading can be correctly ORed.
-  old_AB <<= 2;                   //remember previous state
+  ab <<= 2;
   
   // ENC_PORT & 0×03 reads the port to which encoder is connected 
   // and sets all but two lower bits to zero 
-  // so when you OR it with old_AB bits 2-7 would stay intact. 
-  // Then it gets ORed with old_AB. 
-  old_AB |= ( ENC_PORT & 0x03 );  //add current state
-  // At this point, we have previous reading of encoder pins in bits 2,3 of old_AB, 
+  // so when you OR it with ab bits 2-7 would stay intact. 
+  // Then it gets ORed with ab. 
+  ab |= ( ENC_PORT & 0x03 );  //add current state
+  // At this point, we have previous reading of encoder pins in bits 2,3 of ab, 
   // current readings in bits 0,1, and together they form index of (AKA pointer to) enc_states[]  
   // array element containing current state.
-  // The index being the the lowest nibble of old_AB (old_AB & 0x0f)
-  return ( enc_states[( old_AB & 0x0f )]);
+  // The index being the the lowest nibble of ab (ab & 0x0f)
+  return ( enc_states[( ab & 0x0f )]);
 }
 
  
