@@ -9,7 +9,7 @@ A Processing sketch is included which draws the motion into a window.
 
 This is based on http://www.circuitsathome.com/mcu/reading-rotary-encoder-on-arduino
 It is fast and efficient due to using the lookup table to determine direction and validity.
-
+```
    The lookup table of the binary values represented by enc_states 
      ___     ___     __
    A    |   |   |   |
@@ -39,3 +39,4 @@ It is fast and efficient due to using the lookup table to determine direction an
    
    Forward: 1101 (13) - 0100 (4) - 0010 (2) - 1011 (11)
    Reverse: 1110 (14) - 1000 (8) - 0001 (1) - 0111 (7)
+```
